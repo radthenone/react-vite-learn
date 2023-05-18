@@ -30,3 +30,13 @@ export const createPost = ({ id, title, body }: { id: number, title: string; bod
     })
     .then(response => response.data)
 }
+
+export const deletePost = async (id: number) => {
+    try {
+        const response = await axios.delete(`http://localhost:3001/posts/${id}`)
+        return response.data
+    }
+    catch (error) {
+        throw new Error('Failed to delete post')
+    }
+}

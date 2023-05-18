@@ -15,7 +15,7 @@ export const CreatePost = () => {
   const mutatePost = useMutation(createPost, {
     onSuccess: (newPost: any) => {
       queryClient.setQueryData(['posts', newPost.id], newPost);
-      navigate(`/post/${newPost.id}`);
+      navigate(`/posts/${newPost.id}`);
     }
   });
 
@@ -24,9 +24,14 @@ export const CreatePost = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (queryPosts.data && titleRef.current && bodyRef.current) {
-    const lastPostId = queryPosts.data.length + 1;
+    const lastPostId = () => {
+      const listId = queryPosts.data.map((post: { id: number }) => post.id)
+      return Math.max(...listId) + 1
+    };
+
+    console.log(lastPostId())
       newPost = {
-        id: lastPostId,
+        id: lastPostId(),
         title: titleRef.current.value ?? '',
         body: bodyRef.current.value ?? ''
     };
